@@ -27,5 +27,20 @@ int main(){
 	//equivale a 
 	p = (int *) malloc(50*sizeof(int));
 	
+	p = (int *) realloc(p,0);
+	//equivale a 
+	free(p);
+	
+	/*Cuidado com Realloc: se não houver memoria suficiente
+	para alocar a memoria requisitasa
+	a funcao realloc retorna null*/
+	
+	int *p = (int *) malloc(5*sizeof(int));
+	int *p1 = (int *) realloc(p, 15*sizeof(int));
+	/*Copia os valores de p para p1, garante os dados de *p*/
+	if(p1 != NULL){
+		p = p1;
+	}
+	free(p);
 	system("pause");
 }
