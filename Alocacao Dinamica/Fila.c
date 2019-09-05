@@ -34,8 +34,11 @@ void insere(fila * f, int valor){
 
 void imprime(fila * f){
     celula * p;
+    if(f->i == NULL){
+        printf("Fila Vazia");
+    }
     for(p = f->i; p!= NULL; p = p->prox){
-        printf("%d\n", p->valor);
+        printf("|%d\t|", p->valor);
     }
 }
 
@@ -54,7 +57,17 @@ void inserepp(celula ** ini, celula ** fim, int valor){
         *fim = p;/*ando com meu fim para o endereço alocado*/
     }
 }
-void removeFila(){
+void removeFila(celula ** ini, celula ** fim){
+    celula * lixo;
+    if(*ini == *fim){//Verifica se inicio em fim se encontra na mesma posição
+        lixo = *ini;//ponteiro auxiliar no inicio da fila
+        *ini = *fim = NULL;//remove o ultimo
+        free(lixo);//libera o espaço alocado
+    }else{
+        lixo = *ini;//
+        *ini = (*ini)->prox;//inicio anda uma célula
+        free(lixo);
+    }
 
 }
 int main(){
@@ -65,6 +78,17 @@ int main(){
     inserepp(&flt->i, &flt->t, 8);
     inserepp(&flt->i, &flt->t, 3);
     imprime(flt);
+
+    removeFila(&flt->i, &flt->t);
+    printf("\nRemoveu\n");
+    imprime(flt);
+    removeFila(&flt->i, &flt->t);
+    printf("\nRemoveu\n");
+    imprime(flt);
+    removeFila(&flt->i, &flt->t);
+    printf("\nRemoveu\n");
+    imprime(flt);
+
     //addFila(&flt->i, &flt->t, 3);
 
 
