@@ -15,9 +15,11 @@ int main(){
 	lst_cabeca->prox = NULL;
 
 	printf("add com cabeca\n");
-	lista_com_cabeca(lst_cabeca,20);
+
 	//lista_com_cabeca(lst_cabeca,15);
 	lista_com_cabeca(lst_cabeca,3);
+	lista_com_cabeca(lst_cabeca,2);
+	lista_com_cabeca(lst_cabeca,5);
 	imprime_com_cabeca(lst_cabeca);
 
 	/*segunda lista com cabeça*/
@@ -25,24 +27,12 @@ int main(){
 	lst_cabeca2 =  malloc(sizeof(cel));
 	lst_cabeca2->prox = NULL;
 	printf("add com cabeca\n");
-	lista_com_cabeca(lst_cabeca2,20);
-	lista_com_cabeca(lst_cabeca2,15);
-	lista_com_cabeca(lst_cabeca2,3);
+	lista_com_cabeca(lst_cabeca2,9);
+	lista_com_cabeca(lst_cabeca2,7);
 	imprime_com_cabeca(lst_cabeca2);
-
-	/*cria lista sem cabeça*/
-	printf("add sem cabeca\n");
-	cel *lst_sem_cabe = NULL;
-
-	lista_sem_cabeca(&lst_sem_cabe, 14);
-	lista_sem_cabeca(&lst_sem_cabe, 25);
-	lista_sem_cabeca(&lst_sem_cabe, 21);
-	imprime_sem_cabeca(lst_sem_cabe);
 
 	/*soma duas listas*/
 	printf("Soma duas listas\n");
-
-
 
 	cel * lst_soma = soma_ab(lst_cabeca, lst_cabeca2);
     imprime_com_cabeca(lst_soma);
@@ -55,32 +45,33 @@ cel * cria_celula(int valor){
 	nova->prox = NULL;
 	return nova;
 }
-
+void * adiciona(cel **pp,int valor){
+    cel * p;
+    if(valor > 9){
+        cel * aux;
+        aux = cria_celula(valor / 10);
+        p = aux;
+        aux->prox = cria_celula(valor % 10);
+    }else{
+        p = cria_celula(valor);
+    }
+    *pp = p;
+}
 cel * soma_ab(cel *a, cel *b){
+    cel * p1 = a->prox;
+    cel * p2 = b->prox;
+    cel * p = cria_celula(0);
+    int soma;
 
-	cel *p1 = a->prox;
-	cel *p2 = b->prox;
-	cel * p = cria_celula(0);
-	cel * aux;
-	aux = p;
-	while(p1 != NULL){
-        aux->prox = cria_celula(p1->valor);
-        p1 = p1->prox;
-        aux = aux->prox;
-	}
-	aux = p;
-	while(p2 != NULL){
-        if(aux == NULL){
-            aux->prox = cria_celula(p2->valor);
-        }else{
-            aux->valor = aux->valor + p2->valor;
+	for(p1, p2; p1 != NULL, p2 != NULL; p1 = p1->prox, p2 = p2->prox){
+        if(p1 != NULL && p2 != NULL){
+            soma = p1->valor + p2->valor;
+            adiciona(&p->prox, soma);
         }
-        p2 = p2->prox;
-        aux = aux->prox;
 	}
+
 	return p;
 }
-
 void lista_sem_cabeca(cel **p, int n){
 	cel *aux;
 	if (*p == NULL)
@@ -89,7 +80,6 @@ void lista_sem_cabeca(cel **p, int n){
       for (aux = *p; aux->prox != NULL; aux = aux->prox);
       aux->prox = cria_celula(n);
     }
-
 }
 
 

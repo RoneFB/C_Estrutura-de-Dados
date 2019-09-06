@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct cel 
+struct cel
 {
     int valor;
     struct cel *prox;
@@ -11,11 +11,11 @@ typedef struct cel celula;
 
 celula *criaCelula(int valor)
 {
-    celula *p;                  
-    p = malloc(sizeof(celula)); 
-    p->valor = valor;     
-    p->prox = NULL;         
-    return p;                   
+    celula *p;
+    p = malloc(sizeof(celula));
+    p->valor = valor;
+    p->prox = NULL;
+    return p;
 }
 
 
@@ -45,18 +45,8 @@ celula *multiplicaLista(celula *a, celula *b){
         }
         p1 = p1->prox;
         p2 = p2->prox;
-        
+
     }
 }
 
-celula *inverter(celula *p){
-    celula *aux;
-    celula *nova;
-    for(aux = p; aux != NULL; aux = aux->prox){
-        nova = malloc(sizeof(celula));
-        nova->prox = p->valor;
-        nova->prox = p;
-        nova = nova->prox;
-    }
-}
 

@@ -16,21 +16,7 @@ fila * cria(){
     f->i = f->t = NULL;
     return f;
 }
-/*
-celula * inserefim(celula * t, int valor){
-    celula * p = (celula *) malloc(sizeof(celula));
-    p->valor = valor;
-    p->prox = NULL;
-    if(t != NULL){
-        t->prox = p;
-    }return p;
-}
 
-void insere(fila * f, int valor){
-    f->t = inserefim(f->t, valor);
-    if(f->i == NULL) f->i = f->t;
-}
-*/
 
 void imprime(fila * f){
     celula * p;
@@ -50,8 +36,7 @@ void inserepp(celula ** ini, celula ** fim, int valor){
     p->prox = NULL;
 
     if((*ini) == NULL){/*verifica se a fila está vazia*/
-        *ini = p; /*fila insere caso vazia inicio e fim aponta para o mesmo endereço*/
-        *fim = p;
+        *ini = *fim = p; /*fila insere caso vazia inicio e fim aponta para o mesmo endereço*/
     }else{
         (*fim)->prox = p;/*caso tenha contrario, fim adiciona celula no prox*/
         *fim = p;/*ando com meu fim para o endereço alocado*/
@@ -59,21 +44,19 @@ void inserepp(celula ** ini, celula ** fim, int valor){
 }
 void removeFila(celula ** ini, celula ** fim){
     celula * lixo;
+    lixo = *ini;//ponteiro auxiliar no inicio da fila
     if(*ini == *fim){//Verifica se inicio em fim se encontra na mesma posição
-        lixo = *ini;//ponteiro auxiliar no inicio da fila
         *ini = *fim = NULL;//remove o ultimo
         free(lixo);//libera o espaço alocado
     }else{
-        lixo = *ini;//
         *ini = (*ini)->prox;//inicio anda uma célula
         free(lixo);
     }
-
 }
 int main(){
 
     fila *flt = cria();
-    void insere(fila *f, int valor);
+
     inserepp(&flt->i ,&flt->t, 5);
     inserepp(&flt->i, &flt->t, 8);
     inserepp(&flt->i, &flt->t, 3);
@@ -88,8 +71,5 @@ int main(){
     removeFila(&flt->i, &flt->t);
     printf("\nRemoveu\n");
     imprime(flt);
-
-    //addFila(&flt->i, &flt->t, 3);
-
 
 }
