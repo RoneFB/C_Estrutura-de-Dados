@@ -1,3 +1,4 @@
+
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -71,5 +72,8 @@ int main(){
     removeFila(&flt->i, &flt->t);
     printf("\nRemoveu\n");
     imprime(flt);
+
+
+
 
 }
