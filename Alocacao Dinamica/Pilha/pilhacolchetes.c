@@ -28,7 +28,7 @@ char * desempilhar(celula **P){
         return aux;
     }else{
         aux = (*P)->valor;
-        free(*P);
+        *P = NULL;
         return aux;
     }
     return NULL;

@@ -25,7 +25,6 @@ void desempilhar(celula **P){
         free(lixo);
     }else{
         *P = NULL;
-        free(*P);
         printf("Pilha Vazia");
     }
 }

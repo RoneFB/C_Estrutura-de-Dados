@@ -29,7 +29,7 @@ int desempilhar(celula **P){
         return valor;
     }else{
         valor = lixo->valor;
-        free(*P);
+        (*P) = NULL;
         return valor;
     }
     return NULL;
@@ -53,6 +53,7 @@ int somaPilha(celula **p) {
 
 int main(){
     celula * p = cria_Pilha();
+
     empilha(2,&p);
     empilha(4,&p);
     empilha(8,&p);
@@ -61,5 +62,5 @@ int main(){
 
     imprimir_pilha(p);
     printf("Soma = %d", somaPilha(&p));
-
+    imprimir_pilha(p);
 }
