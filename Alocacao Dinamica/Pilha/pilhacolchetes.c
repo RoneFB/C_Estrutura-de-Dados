@@ -17,14 +17,19 @@ void empilha(char valor, celula **P){
     nova->prox = (*P);//aponta o prox para o topo da pilha
     *P = nova;// atualiza o topo da pilha
 }
-celula * desempilhar(celula **P){
+char * desempilhar(celula **P){
     celula *lixo;
+    char aux;
     if((*P)->prox!= NULL){
         lixo = (*P);
         (*P) = lixo->prox;
-        return lixo;
+        aux = lixo->valor;
+        free(lixo);
+        return aux;
     }else{
-        return (*P);
+        aux = (*P)->valor;
+        free(*P);
+        return aux;
     }
     return NULL;
 }
@@ -36,33 +41,37 @@ int validacao(char *s){
     celula *p = cria_Pilha();
     int i;
     for(i = 0; s[i]!='\0'; i++){
-        celula * aux;
+        char * aux;
         switch(s[i]){
             case ')':
                 if(p == NULL)return 0;
                 aux = desempilhar(&p);
-                if (aux->valor != '(') return 0;
+                if (aux != '(') return 0;
                 break;
 
             case ']':
                 if(p == NULL)return 0;
                 aux = desempilhar(&p);
-                if (aux->valor != '[') return 0;
+                if (aux != '[') return 0;
                 break;
             default: empilha(s[i], &p);
         }
     }
     return 1;
-
 }
+
 
 int main(){
     celula *p = cria_Pilha();
-    char s[5] = "()()";
+    char s[5] = "((()))";
+    char s2[5] = "(((])))";
 
+   if(validacao(&s) == 1)printf("\nS1 Bem formada");
+   else printf("\nS1 mal formada");
 
-   if(validacao(&s) == 1)printf("Bem formada");
-   else printf("mal formada");
+   if(validacao(&s2) == 1)printf("\nS2 Bem formada");
+   else printf("\nS2 mal formada");
+
 
 
 
