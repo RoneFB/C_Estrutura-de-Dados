@@ -2,17 +2,16 @@
 #include<stdlib.h>
 
 typedef struct celula{
-    int valor;
+    char valor;
     struct celula *prox;
 }; typedef struct celula celula;
 
 celula * cria_Pilha(){
     celula *p;
-    p = malloc(sizeof(celula));
     p = NULL;
     return p;
 }
-void empilha(int valor, celula **P){
+void empilha(char valor, celula **P){
     celula * nova = malloc(sizeof(celula));
     nova->valor = valor;
     nova->prox = (*P);//aponta o prox para o topo da pilha
@@ -23,43 +22,45 @@ void desempilhar(celula **P){
         celula *lixo = malloc(sizeof(celula));
         lixo = (*P);
         *P = lixo->prox;
+        free(lixo);
     }else{
         *P = NULL;
+        free(*P);
         printf("Pilha Vazia");
     }
-
-
 }
  void imprimir_pilha(celula *P) {
     for (celula *aux = P; aux != NULL; aux = aux->prox)
         printf("%d\n", aux->valor);
  }
+int validacao(char *s){
+    celula *p = cria_Pilha();
+    int i;
+    for(i = 0; s[i]!='\0'; ++i){
+        switch(s[i]){
+            case ")":
+                if(p == NULL || p->valor != "(")return 0;
+                break;
+            }
+            case "]":
+                if(p == NULL || p->valor != "[")return 0;
+                break;
+            default: empilha(char[i], &p);
+        }
+    }
 
+    return 1;
+
+}
 
 int main(){
     celula *p = cria_Pilha();
+    char s[5] = '{[]}{}';
     printf("\Empilhando\n");
-    empilha(11,&p);
-    empilha(8,&p);
-    empilha(4,&p);
-    empilha(3,&p);
-    empilha(2,&p);
-    imprimir_pilha(p);
 
-    printf("\nDesempilhando\n");
-    desempilhar(&p);
-    imprimir_pilha(p);
-    printf("\nDesempilhando\n");
-    desempilhar(&p);
-    imprimir_pilha(p);
-    printf("\nDesempilhando\n");
-    desempilhar(&p);
-    imprimir_pilha(p);
-    printf("\nDesempilhando\n");
-    desempilhar(&p);
-    imprimir_pilha(p);
-    printf("\nDesempilhando\n");
-    desempilhar(&p);
-    imprimir_pilha(p);
+    validacao(&s);
+
+
+
 
 }
