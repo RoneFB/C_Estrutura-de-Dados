@@ -62,15 +62,10 @@ int main(){
     char s[5] = "((()))";
     char s2[5] = "(((])))";
 
-   if(validacao(&s) == 1)printf("\nS1 Bem formada");
+   if(validacao(s) == 1)printf("\nS1 Bem formada");
    else printf("\nS1 mal formada");
 
-   if(validacao(&s2) == 1)printf("\nS2 Bem formada");
+   if(validacao(s2) == 1)printf("\nS2 Bem formada");
    else printf("\nS2 mal formada");
-
-
-
-
-
 
 }
