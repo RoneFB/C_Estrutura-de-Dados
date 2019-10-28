@@ -39,7 +39,6 @@ void convDecBin(celula * p, int valor){
     while(valor >= 1){
         b = valor%2;
         valor = valor /2;
-        printf("valor: %d, resto:%d\n", valor, b);
         empilha(b, p);
     }
 }
