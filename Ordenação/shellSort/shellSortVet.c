@@ -1,33 +1,46 @@
 #include<stdio.h>
 #include<stdlib.h>
+void troca(int *a, int *b)
+{
+    int tmp;
+    tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+void imprimir(int v[], int tamanho)
+{
+    int i;
+    for (i = 0; i < tamanho; i++)
+        printf("%d ", v[i]);
+    printf("\n");
+}
 
 void shellSort(int *vet, int size) {
     int i , j , value;
-
     int h = size-1;
-
         h = (3*h)+1;
-
     while (h > 0) {
         for(i = h; i < size; i++) {
             value = vet[i];
             j = i;
             while (j > h-1 && value <= vet[j - h]) {
+
                 vet[j] = vet [j - h];
                 j = j - h;
+                printf("%d %d\n",i,j);
             }
             vet [j] = value;
+            imprimir(vet, 9);
         }
         h = h/3;
     }
 }
 
 int main(){
-    int vet[12] = {9,7,4,8,3,5,7,9,2,12,15,23,45};
-    shellSort(vet, 12);
+    int vet[9] = {100,75,92,0,150,12,2,4,1};
 
-
-   for(int i = 0; i < 12; i++){
-        printf("\n%d", vet[i]);
-   }
+    imprimir(vet, 9);
+    shellSort(vet, 9);
+    imprimir(vet, 9);
 }
