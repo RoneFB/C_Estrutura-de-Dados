@@ -9,7 +9,7 @@ struct cel{
 void imprimir(no *arv){
     if(arv != NULL){
         imprimir(arv->esq);
-        printf(" %d ", arv->valor);
+        printf("esq -> %d | %d = %d| dir -> %d\n\n",arv->esq, arv->valor, arv, arv->dir);
         imprimir(arv->dir);
     }
 
@@ -51,7 +51,20 @@ no *MaiorDireita(no **arv){
        else
           *arv = NULL;
        return aux;
-    }
+       }
+}
+
+no *MenorEsquerda(no **arv){
+    if((*arv)->esq != NULL)
+       return MenorEsquerda(&(*arv)->esq);
+    else{
+       no *aux = *arv;
+       if((*arv)->dir != NULL) // se nao houver essa verificacao, esse nó vai perder todos os seus filhos da direita!
+          *arv = (*arv)->dir;
+       else
+          *arv = NULL;
+       return aux;
+       }
 }
 
 
@@ -63,32 +76,29 @@ void remover(no **arv, int numero){
        if(numero > (*arv)->valor)
           remover(&(*arv)->dir, numero);
        else{
-          /*Nó encontrador*/
           no *aux = *arv;
           if (((*arv)->esq == NULL) && ((*arv)->dir == NULL)){
-                /*Caso nó não tenha filho*/
                 free(aux);
                 (*arv) = NULL;
-               }
+          }
           else{
-             if ((*arv)->esq == NULL){ /*Caso nó tem filho a sua direita*/
+             if((*arv)->esq == NULL){
                 (*arv) = (*arv)->dir;
                 aux->dir = NULL;
-                free(aux);
-             }
-             else{
+                free(aux); aux = NULL;
+                }
+             else{            //so tem filho da esquerda
                 if ((*arv)->dir == NULL){
                     (*arv) = (*arv)->esq;
                     aux->esq = NULL;
-                    free(aux);
+                    free(aux); aux = NULL;
                     }
                 else{
-                   aux = MaiorDireita(&(*arv)->esq);
+                   aux = MenorEsquerda(&(*arv)->dir);
                    aux->esq = (*arv)->esq;
                    aux->dir = (*arv)->dir;
                    (*arv)->esq = (*arv)->dir = NULL;
-                   free((*arv));
-                   *arv = aux;
+                   free((*arv));  *arv = aux;  aux = NULL;
                    }
                 }
              }
@@ -98,24 +108,24 @@ void remover(no **arv, int numero){
 int main(){
     /*cria arvore*/
     no *arv = NULL;
-    inserir(&arv,11);
-    inserir(&arv,8);
-    inserir(&arv, 3);
-    inserir(&arv, 1);
-    inserir(&arv, 0);
-    inserir(&arv, 2);
-    inserir(&arv, 5);
-    inserir(&arv, 4);
 
-    inserir(&arv, 15);
-    inserir(&arv, 21);
-    inserir(&arv, 16);
-    inserir(&arv, 20);
-    inserir(&arv, 19);
-    inserir(&arv, 25);
-    inserir(&arv, 30);
+    inserir(&arv,90);
+    inserir(&arv,50);
+    inserir(&arv,54);
+    inserir(&arv,40);
+    inserir(&arv,35);
+    inserir(&arv,37);
+    inserir(&arv,30);
+    inserir(&arv,20);
+    inserir(&arv,10);
+    inserir(&arv,5);
 
-    remover(&arv, 16);
+
+
+
+
+
+    remover(&arv, 50);
     imprimir(arv);
     printf("\nBusca %d", busca(25, &arv)->valor);
 
