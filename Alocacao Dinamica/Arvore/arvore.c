@@ -41,31 +41,58 @@ no * busca (int valor, no **arv){
     }
 }
 
-void remove(no ** arv, int valor){
-    if((*arv)->valor == valor){
-        if((*arv)->dir == NULL &&(*arv)->esq == NULL){
-            free(*arv);
-            return NULL;
-        }if((*arv)->dir != NULL && (*arv)->esq != NULL){
-            no * lixo = *arv;
-            if((*arv)->dir->valor > (*arv)->esq->valor){
-                (*arv)->dir->esq = (*arv)->esq;
-                return (*arv)->dir;
-            }else{
-                (*arv)->esq->esq = (*arv)->dir;
-                return (*arv)->esq;
-            }
-
-        }
-
-        return;
+no *MaiorDireita(no **arv){
+    if((*arv)->esq != NULL)
+       return MaiorDireita(&(*arv)->dir);
+    else{
+       no *aux = *arv;
+       if((*arv)->esq != NULL) // se nao houver essa verificacao, esse nó vai perder todos os seus filhos da esquerda!
+          *arv = (*arv)->esq;
+       else
+          *arv = NULL;
+       return aux;
     }
-    if((*arv)->valor > valor)
-        remove(&(*arv)->dir)
-    if((*arv)->valor < valor)
-        remove(&(*arv)->esq)
+}
 
 
+void remover(no **arv, int numero){
+    if(*arv == NULL) return;
+    if(numero < (*arv)->valor)
+       remover(&(*arv)->esq, numero);
+    else
+       if(numero > (*arv)->valor)
+          remover(&(*arv)->dir, numero);
+       else{
+          /*Nó encontrador*/
+          no *aux = *arv;
+          if (((*arv)->esq == NULL) && ((*arv)->dir == NULL)){
+                /*Caso nó não tenha filho*/
+                free(aux);
+                (*arv) = NULL;
+               }
+          else{
+             if ((*arv)->esq == NULL){ /*Caso nó tem filho a sua direita*/
+                (*arv) = (*arv)->dir;
+                aux->dir = NULL;
+                free(aux);
+             }
+             else{
+                if ((*arv)->dir == NULL){
+                    (*arv) = (*arv)->esq;
+                    aux->esq = NULL;
+                    free(aux);
+                    }
+                else{
+                   aux = MaiorDireita(&(*arv)->esq);
+                   aux->esq = (*arv)->esq;
+                   aux->dir = (*arv)->dir;
+                   (*arv)->esq = (*arv)->dir = NULL;
+                   free((*arv));
+                   *arv = aux;
+                   }
+                }
+             }
+          }
 }
 
 int main(){
@@ -88,7 +115,7 @@ int main(){
     inserir(&arv, 25);
     inserir(&arv, 30);
 
-    remover(&arv, 15);
+    remover(&arv, 16);
     imprimir(arv);
     printf("\nBusca %d", busca(25, &arv)->valor);
 
