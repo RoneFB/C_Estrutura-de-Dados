@@ -48,7 +48,6 @@ no* buscaPai (no* arv, int valor){
 }
 
 int remmaior(no **arv){
-    if(*arv == NULL)abort();
     while((*arv)->dir != NULL) *arv = (*arv)->dir;
     no * aux = *arv;
     int v = aux->valor;
@@ -62,14 +61,42 @@ void remover(no **arv){
     else{
         no * aux = *arv;
         if(aux->esq == NULL){
-           *arv = aux->dir;
+           *arv = (*arv) -> dir;
         }
         else if(aux->dir == NULL){
-           *arv = aux->esq;
+           *arv = (*arv) -> esq;
         }
         else aux->valor = remmaior(&aux->esq);
         if(aux != *arv) free(aux);
     }
+}
+
+
+void remover2(no ** arv) {
+  no * aux;
+
+  if ((*arv) -> dir ==  NULL) {
+    aux = *arv;
+    *arv = (*arv) -> esq;
+    free(aux);
+  } else
+  if ((*arv) -> esq == NULL) {
+    aux = *arv;
+    *arv = (*arv) -> dir;
+    free(aux);
+  } else {
+    aux = (*arv) -> dir;
+
+    while (aux -> esq !=  NULL) {
+      aux = aux -> esq;
+    }
+
+    aux -> esq = (*arv) -> esq;
+    aux = *arv;
+    *arv = aux -> dir;
+
+    free(aux);
+  }
 }
 
 int main(){
