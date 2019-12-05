@@ -27,106 +27,74 @@ void inserir(no **arv, int valor){
     }
 }
 
-
-no * busca (int valor, no **arv){
-    no * aux;
-    aux = *arv;
-
-    while(aux->valor != valor){
-        if(aux->valor = valor) return aux;
-        if(aux->valor > valor) aux = aux->dir;
-        else aux = aux->esq;
-
+no* buscaArvore (no* arv, int valor){
+    if (arv == NULL)
         return NULL;
+    else if (arv->valor > valor)
+        return buscaArvore(arv->esq, valor);
+    else if (arv->valor < valor)
+        return buscaArvore(arv->dir, valor);
+    else return arv;
+}
+
+no* buscaPai (no* arv, int valor){
+    if (arv == NULL)
+        return NULL;
+    else if (arv->esq->valor > valor)
+        return buscaArvore(arv->esq, valor);
+    else if (arv->dir->valor < valor)
+        return buscaArvore(arv->dir, valor);
+    else return arv;
+}
+
+int remmaior(no **arv){
+    if(*arv == NULL)abort();
+    while((*arv)->dir != NULL) *arv = (*arv)->dir;
+    no * aux = *arv;
+    int v = aux->valor;
+    *arv = aux->esq;
+    free(aux);
+    return v;
+}
+
+void remover(no **arv){
+    if(*arv == NULL)return;
+    else{
+        no * aux = *arv;
+        if(aux->esq == NULL){
+           *arv = aux->dir;
+        }
+        else if(aux->dir == NULL){
+           *arv = aux->esq;
+        }
+        else aux->valor = remmaior(&aux->esq);
+        if(aux != *arv) free(aux);
     }
-}
-
-no *MaiorDireita(no **arv){
-    if((*arv)->esq != NULL)
-       return MaiorDireita(&(*arv)->dir);
-    else{
-       no *aux = *arv;
-       if((*arv)->esq != NULL) // se nao houver essa verificacao, esse nó vai perder todos os seus filhos da esquerda!
-          *arv = (*arv)->esq;
-       else
-          *arv = NULL;
-       return aux;
-       }
-}
-
-no *MenorEsquerda(no **arv){
-    if((*arv)->esq != NULL)
-       return MenorEsquerda(&(*arv)->esq);
-    else{
-       no *aux = *arv;
-       if((*arv)->dir != NULL) // se nao houver essa verificacao, esse nó vai perder todos os seus filhos da direita!
-          *arv = (*arv)->dir;
-       else
-          *arv = NULL;
-       return aux;
-       }
-}
-
-
-void remover(no **arv, int numero){
-    if(*arv == NULL) return;
-    if(numero < (*arv)->valor)
-       remover(&(*arv)->esq, numero);
-    else
-       if(numero > (*arv)->valor)
-          remover(&(*arv)->dir, numero);
-       else{
-          no *aux = *arv;
-          if (((*arv)->esq == NULL) && ((*arv)->dir == NULL)){
-                free(aux);
-                (*arv) = NULL;
-          }
-          else{
-             if((*arv)->esq == NULL){
-                (*arv) = (*arv)->dir;
-                aux->dir = NULL;
-                free(aux); aux = NULL;
-                }
-             else{            //so tem filho da esquerda
-                if ((*arv)->dir == NULL){
-                    (*arv) = (*arv)->esq;
-                    aux->esq = NULL;
-                    free(aux); aux = NULL;
-                    }
-                else{
-                   aux = MenorEsquerda(&(*arv)->dir);
-                   aux->esq = (*arv)->esq;
-                   aux->dir = (*arv)->dir;
-                   (*arv)->esq = (*arv)->dir = NULL;
-                   free((*arv));  *arv = aux;  aux = NULL;
-                   }
-                }
-             }
-          }
 }
 
 int main(){
     /*cria arvore*/
     no *arv = NULL;
 
-    inserir(&arv,90);
-    inserir(&arv,50);
-    inserir(&arv,54);
-    inserir(&arv,40);
-    inserir(&arv,35);
-    inserir(&arv,37);
-    inserir(&arv,30);
-    inserir(&arv,20);
-    inserir(&arv,10);
-    inserir(&arv,5);
+
+   inserir(&arv,8);
+   inserir(&arv,3);
+   inserir(&arv,1);
+   inserir(&arv,6);
+   inserir(&arv,4);
+   inserir(&arv,7);
+   inserir(&arv,10);
+   inserir(&arv,14);
+   inserir(&arv,13);
+
+    int valor = 3;
+
+    no * busca = buscaArvore(arv, valor);
 
 
-
-
-
-
-    remover(&arv, 50);
+    remover(&busca);
     imprimir(arv);
-    printf("\nBusca %d", busca(25, &arv)->valor);
+    printf("\nBusca %d",  arv);
+
 
 }
