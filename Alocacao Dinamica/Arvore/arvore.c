@@ -40,7 +40,6 @@ no* buscaArvore (no* arv, int valor){
 
 void remover2(no ** raiz) {
   no * conc, *prev;
-
   conc = *raiz;
   if ((*raiz) -> dir ==  NULL) {
     *raiz = (*raiz) -> esq;
@@ -49,21 +48,23 @@ void remover2(no ** raiz) {
   if ((*raiz) -> esq == NULL) {
     *raiz = (*raiz) -> dir;
     free(conc);
-  } else if((*raiz)->dir != NULL && (*raiz)->esq != NULL) {
-
+  }
+  else if((*raiz)->dir != NULL && (*raiz)->esq != NULL) {
     conc = (*raiz) -> esq;
-    while (conc->dir !=  NULL) {
-      prev = conc;
-      conc = conc->dir;
-    }
-    if(prev != *raiz){
+    if(conc->dir != NULL){
+        while (conc->dir !=  NULL) {
+            prev = conc;
+            conc = conc->dir;
+        }
         prev->dir = conc->esq;
         (*raiz)->valor = conc->valor;
-        free(conc);
+    }else{
+        (*raiz)->valor = conc->valor;
+        (*raiz)->esq = conc->esq;
     }
-
-
+    free(conc);
   }
+
 }
 
 int main(){
@@ -73,6 +74,7 @@ int main(){
 
    inserir(&arv,8);
    inserir(&arv,3);
+   inserir(&arv,2);
    inserir(&arv,1);
    inserir(&arv,6);
    inserir(&arv,4);
@@ -81,14 +83,14 @@ int main(){
    inserir(&arv,14);
    inserir(&arv,13);
 
-    //int valor = 10;
+    int valor = 2;
 
-   // no * busca = buscaArvore(arv, valor);
+    no * busca = buscaArvore(arv, valor);
 
-
-    remover2(&arv);
     imprimir(arv);
-    //printf("\nBusca %d",  arv);
+    remover2(&arv->esq->esq->esq);
+    imprimir(arv);
+    printf("\nBusca %d",  arv->valor);
 
 
 }
