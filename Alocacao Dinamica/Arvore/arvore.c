@@ -9,7 +9,7 @@ struct cel{
 void imprimir(no *arv){
     if(arv != NULL){
         imprimir(arv->esq);
-        printf("esq -> %d | %d = %d| dir -> %d\n\n",arv->esq, arv->valor, arv, arv->dir);
+        printf("%d\n",arv->valor);
         imprimir(arv->dir);
     }
 
@@ -37,65 +37,32 @@ no* buscaArvore (no* arv, int valor){
     else return arv;
 }
 
-no* buscaPai (no* arv, int valor){
-    if (arv == NULL)
-        return NULL;
-    else if (arv->esq->valor > valor)
-        return buscaArvore(arv->esq, valor);
-    else if (arv->dir->valor < valor)
-        return buscaArvore(arv->dir, valor);
-    else return arv;
-}
 
-int remmaior(no **arv){
-    while((*arv)->dir != NULL) *arv = (*arv)->dir;
-    no * aux = *arv;
-    int v = aux->valor;
-    *arv = aux->esq;
-    free(aux);
-    return v;
-}
+void remover2(no ** raiz) {
+  no * conc, *prev;
 
-void remover(no **arv){
-    if(*arv == NULL)return;
-    else{
-        no * aux = *arv;
-        if(aux->esq == NULL){
-           *arv = (*arv) -> dir;
-        }
-        else if(aux->dir == NULL){
-           *arv = (*arv) -> esq;
-        }
-        else aux->valor = remmaior(&aux->esq);
-        if(aux != *arv) free(aux);
-    }
-}
-
-
-void remover2(no ** arv) {
-  no * aux;
-
-  if ((*arv) -> dir ==  NULL) {
-    aux = *arv;
-    *arv = (*arv) -> esq;
-    free(aux);
+  conc = *raiz;
+  if ((*raiz) -> dir ==  NULL) {
+    *raiz = (*raiz) -> esq;
+    free(conc);
   } else
-  if ((*arv) -> esq == NULL) {
-    aux = *arv;
-    *arv = (*arv) -> dir;
-    free(aux);
-  } else {
-    aux = (*arv) -> dir;
+  if ((*raiz) -> esq == NULL) {
+    *raiz = (*raiz) -> dir;
+    free(conc);
+  } else if((*raiz)->dir != NULL && (*raiz)->esq != NULL) {
 
-    while (aux -> esq !=  NULL) {
-      aux = aux -> esq;
+    conc = (*raiz) -> esq;
+    while (conc->dir !=  NULL) {
+      prev = conc;
+      conc = conc->dir;
+    }
+    if(prev != *raiz){
+        prev->dir = conc->esq;
+        (*raiz)->valor = conc->valor;
+        free(conc);
     }
 
-    aux -> esq = (*arv) -> esq;
-    aux = *arv;
-    *arv = aux -> dir;
 
-    free(aux);
   }
 }
 
@@ -114,14 +81,14 @@ int main(){
    inserir(&arv,14);
    inserir(&arv,13);
 
-    int valor = 3;
+    //int valor = 10;
 
-    no * busca = buscaArvore(arv, valor);
+   // no * busca = buscaArvore(arv, valor);
 
 
-    remover(&busca);
+    remover2(&arv);
     imprimir(arv);
-    printf("\nBusca %d",  arv);
+    //printf("\nBusca %d",  arv);
 
 
 }
